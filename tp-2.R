@@ -1,0 +1,91 @@
+set.seed(11)
+
+# 1(b)
+X_dist <- function(R){
+  return (runif(R, 0, 18))
+}
+
+# 1(c)
+par(mfrow = c(1, 2))
+hist(X_dist(100), breaks = 30, col = "grey", main = "R = 100", xlab = "X", prob = TRUE)
+hist(X_dist(10000), breaks = 30, col = "grey", main = "R = 10000", xlab = "X", prob = TRUE)
+
+
+# 1(d)
+muchas_X <- X_dist(10000)
+promedio_acumulado <- cumsum(muchas_X) / seq_along(muchas_X)
+plot(promedio_acumulado, type = "l", col = "blue", main = "Promedio Acumulado", xlab = "Numero de observaciones", ylab = "Promedio")
+abline(h = 9, col = "red", lty = 2)
+
+
+
+# 2(b)
+Y_dist <- function(R){
+  return (rexp(R,1/9))
+}
+
+# 2(c)
+par(mfrow = c(1, 2))
+hist(Y_dist(100), breaks = 30, col = "grey", main = "R = 100", xlab = "X", prob = TRUE)
+hist(Y_dist(10000), breaks = 30, col = "grey", main = "R = 10000", xlab = "X", prob = TRUE)
+
+
+# 3(b)
+
+Xn_dist <- function(n, R){
+  replicate(R, mean(runif(n, 0, 18)))
+}
+
+# 3(c)
+X15 <- Xn_dist(15, 10000)
+
+hist(X15, breaks = 30, col = "grey", prob = TRUE,main = "Histograma de X15", xlab = "Promedio de 15 valores de X")
+
+
+# 4(a) X
+par(mfrow = c(1, 2))
+
+hist(X_dist(10^6), breaks = 30, col = "grey", prob = TRUE, main = "X", xlab = "X")
+
+curve(dunif(x, 0, 18), add = TRUE, col = "red", lwd = 2)
+
+
+hist(Xn_dist(40,10^6), breaks = 30, col = "grey", prob = TRUE, main = "Promedio)", xlab = "X40")
+
+curve(dnorm(x, mean = 9, sd = sqrt(27/40)), add = TRUE, col = "blue", lwd = 2)
+
+
+# 4(a) Y
+Yn_dist <- function(n, R){
+  replicate(R, mean(rexp(n, 1/9)))
+} 
+par(mfrow = c(1, 2))
+
+hist(Y_dist(10^6), breaks = 30, col = "grey", prob = TRUE, main = "Y", xlab = "Y")
+
+curve(dexp(x, rate = 1/9), add = TRUE, col = "red", lwd = 2)
+
+
+hist(Yn_dist(40,10^6), breaks = 30, col = "grey", prob = TRUE, main = "Promedio", xlab = "Y40")
+
+curve(dnorm(x, mean = 9, sd = sqrt(81/40)), add = TRUE, col = "blue", lwd = 2)
+
+# 4(b)
+par(mfrow = c(5, 2), mar=c(2.5,2.5,1.8,0.8))
+
+for (n in c(1, 2, 5, 15, 40)) {
+  for (R in c(100,10^6)) {
+    hist(Xn_dist(n, R), breaks = 30, col = "grey", prob = TRUE,
+         main = paste0("n=", n, ", R=", R))
+  }
+}
+
+# 4(c)
+par(mfrow = c(5, 2), mar=c(2.5,2.5,1.8,0.8))
+
+for (n in c(1, 2, 5, 15, 40)) {
+  for (R in c(100,10^6)) {
+    hist(Yn_dist(n, R), breaks = 30, col = "grey", prob = TRUE,
+         main = paste0("n=", n, ", R=", R))
+  }
+}
